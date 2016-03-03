@@ -1,0 +1,59 @@
+{
+  "name": "onedrop/solr-extbase",
+  "type": "typo3-cms-extension",
+  "description": "Extbase indexing addition to Apache Solr for TYPO3",
+  "minimum-stability": "alpha",
+  "license": "GPL-2.0+",
+  "keywords": ["typo3", "TYPO3 CMS", "solr", "search", "extbase"],
+  "homepage": "http://www.1drop.de",
+  "authors": [
+    {
+      "name": "Hans Höchtl",
+      "email": "hhoechtl@1drop.de",
+      "role": "Lead Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/1drop/ext-solr-extbase/issues",
+    "source": "https://github.com/1drop/ext-solr-extbase"
+  },
+  "require": {
+    "php": ">=5.5.0",
+    "typo3/cms-core": ">=7.6.0",
+    "apache-solr-for-typo3/solr": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": ">=4.8.0 <6.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Onedrop\\SolrExtbase\\": "Classes/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Onedrop\\SolrExtbase\\Tests\\": "Tests/",
+      "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/"
+    }
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "vendor-dir": ".Build/vendor",
+    "bin-dir": ".Build/bin"
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "mkdir -p .Build/Web/typo3conf/ext/",
+      "[ -L .Build/Web/typo3conf/ext/solr_extbase ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/solr_extbase"
+    ]
+  },
+  "extra": {
+    "typo3/cms": {
+      "cms-package-dir": "{$vendor-dir}/typo3/cms",
+      "web-dir": ".Build/Web"
+    },
+    "typo3/class-alias-loader": {
+      "always-add-alias-loader": true
+    }
+  }
+}
