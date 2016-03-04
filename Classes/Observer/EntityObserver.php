@@ -51,12 +51,17 @@ class EntityObserver
      * @var Queue
      */
     protected $indexQueue;
+    /**
+     * @var GarbageCollector
+     */
+    protected $garbageCollector;
 
     /**
      * Constructor
      */
     public function __construct()
     {
+        $this->garbageCollector = GeneralUtility::makeInstance(GarbageCollector::class);
         $this->indexQueue = GeneralUtility::makeInstance(Queue::class);
     }
 
@@ -114,8 +119,6 @@ class EntityObserver
      */
     protected function removeFromIndexAndQueue($recordTable, $recordUid)
     {
-        /** @var GarbageCollector $garbageCollector */
-        $garbageCollector = GeneralUtility::makeInstance(GarbageCollector::class);
-        $garbageCollector->collectGarbage($recordTable, $recordUid);
+        $this->garbageCollector->collectGarbage($recordTable, $recordUid);
     }
 }

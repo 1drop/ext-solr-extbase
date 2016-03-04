@@ -13,7 +13,7 @@ if (!defined('TYPO3_MODE')) {
 /** @var Dispatcher $signalSlotDispatcher */
 $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
 // We must connect to the persistence backend in order to clear the session (cache of objects) when changing the language
-$signalSlotDispatcher->connect(Backend::class, 'beforeGettingObjectData', ExtbaseForceLanguage::class, 'forceLanguageForQueries');
+$signalSlotDispatcher->connect(Backend::class, 'beforeGettingObjectData', ExtbaseForceLanguage::class, 'forceLanguageForQuery');
 
 // We connect the model observer in case of the models are edited via an extbase repository (solr hook not working here)
 $signalSlotDispatcher->connect(Backend::class, 'afterInsertObject', EntityObserver::class, 'afterCreateProduct');

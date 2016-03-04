@@ -39,10 +39,21 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  */
 class ExtbaseForceLanguage implements SingletonInterface
 {
+    /** @var  ObjectManager */
+    protected $objectManager;
+    /** @var  Session */
+    protected $persistenceSession;
     protected $overrideLanguage = false;
     protected $languageUid = 0;
     protected $languageMode = null;
     protected $languageOverlayMode = false;
+
+    public function __construct()
+    {
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->persistenceSession = $this->objectManager->get(Session::class);
+    }
+
 
     /**
      * This method is registered on the Signal beforeGettingObjectData of the Extbase Generic Backend
@@ -51,7 +62,7 @@ class ExtbaseForceLanguage implements SingletonInterface
      * @param QueryInterface $query
      * @return QueryInterface
      */
-    public function forceLanguageForQueries(QueryInterface $query)
+    public function forceLanguageForQuery(QueryInterface $query)
     {
         if (!$this->overrideLanguage) {
             return [$query];
@@ -83,11 +94,7 @@ class ExtbaseForceLanguage implements SingletonInterface
     public function setOverrideLanguage($overrideLanguage)
     {
         $this->overrideLanguage = $overrideLanguage;
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        /** @var Session $persistenceSession */
-        $persistenceSession = $objectManager->get(Session::class);
-        $persistenceSession->destroy();
+        $this->persistenceSession->destroy();
     }
 
     /**
