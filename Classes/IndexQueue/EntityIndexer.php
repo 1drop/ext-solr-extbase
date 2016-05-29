@@ -69,7 +69,11 @@ class EntityIndexer extends Indexer
     protected function getRepositoryByItem(Item $item, $language = 0)
     {
         $solrConfiguration = Util::getSolrConfigurationFromPageId($item->getRootPageUid(), true, $language);
-        $indexQueueConfiguration = $solrConfiguration['index.']['queue.'][$item->getIndexingConfigurationName() . '.'];
+        if (!is_array($solrConfiguration)) {
+            $indexQueueConfiguration = $solrConfiguration->getIndexQueueConfigurationByName($item->getIndexingConfigurationName());
+        } else {
+            $indexQueueConfiguration = $solrConfiguration['index.']['queue.'][$item->getIndexingConfigurationName() . '.'];
+        }
         if (!isset($indexQueueConfiguration['repository'])) {
             throw new \InvalidArgumentException('Missing repository in indexQueue configuration', 1457004659);
         }
